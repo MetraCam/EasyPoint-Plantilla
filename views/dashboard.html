@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyPoint - Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dashboard-body">
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-calendar-check"></i>
+            <span class="logo-text">EasyPoint</span>
+        </div>
+        <div class="backhome">
+            <a href="index.html" class="menu-item-link">
+                <i class="fas fa-arrow-left"></i> <span class="menu-text">Volver al Inicio</span>
+            </a>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="menu-item active" data-target="view-dashboard">
+                <i class="fas fa-tachometer-alt"></i><span class="menu-text">Gestión</span>
+            </a>
+            <a href="#" class="menu-item" data-target="view-calendar">
+                <i class="far fa-calendar-alt"></i><span class="menu-text">Calendario</span>
+            </a>
+            <a href="#" class="menu-item" data-target="view-clients">
+                <i class="far fa-user"></i><span class="menu-text">Clientes</span>
+            </a>
+            <a href="#" class="menu-item" data-target="view-settings">
+                <i class="fas fa-cog"></i><span class="menu-text">Configuración</span>
+            </a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <div id="view-dashboard" class="main-view active-view">
+            <header class="header">
+                <div class="header-text">
+                    <h1 class="page-title">Gestión</h1>
+                    <p class="page-subtitle">Configura los detalles de tu negocio y servicios</p>
+                </div>
+            </header>
+            <div class="settings-tabs">
+                <button class="tab-btn active" data-tab="business"><i class="fas fa-store"></i> Negocio</button>
+                <button class="tab-btn" data-tab="schedule"><i class="far fa-clock"></i> Horario</button>
+                <button class="tab-btn" data-tab="services"><i class="fas fa-cut"></i> Servicios</button>
+            </div>
+            
+            <div id="business" class="tab-content active-content">
+                <section class="settings-card">
+                    <div class="card-header">
+                        <h3>Información del Negocio</h3>
+                    </div>
+                    <form class="settings-form">
+                        <div class="form-group">
+                            <label>Nombre del Negocio</label>
+                            <input type="text" class="form-input" value="Salón de Belleza Elegance">
+                        </div>
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input type="text" class="form-input" value="Calle Falsa 123">
+                        </div>
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <textarea rows="4" class="form-input">Expertos en cuidado personal.</textarea>
+                        </div>
+                        <button type="button" class="btn-save-1">Guardar Cambios</button>
+                    </form>
+                </section>
+            </div>
+
+            <div id="schedule" class="tab-content hidden">
+                <section class="settings-card">
+                    <div class="card-header">
+                        <h3>Horarios de Apertura</h3>
+                    </div>
+                    <p class="placeholder-text">Configuración de horario no funcional en la plantilla.</p>
+                </section>
+            </div>
+
+            <div id="services" class="tab-content hidden">
+                <section class="settings-card">
+                    <div class="card-header">
+                        <h3>Gestión de Servicios</h3>
+                    </div>
+                    <p class="placeholder-text">Panel de servicios no funcional en la plantilla.</p>
+                </section>
+            </div>
+        </div>
+
+        <div id="view-calendar" class="main-view hidden">
+            <header class="header">
+                <div class="header-text">
+                    <h1 class="page-title">Resumen de Citas</h1>
+                </div>
+            </header>
+            <section class="summary-cards">
+                <div class="card">
+                    <div class="card-content"><h3>5</h3><p>Hoy</p></div>
+                    <div class="card-icon card-icon-blue"><i class="far fa-calendar"></i></div>
+                </div>
+                <div class="card">
+                    <div class="card-content"><h3>2</h3><p>Pendientes</p></div>
+                    <div class="card-icon card-icon-yellow"><i class="far fa-clock"></i></div>
+                </div>
+                <div class="card">
+                    <div class="card-content"><h3>18</h3><p>Confirmados</p></div>
+                    <div class="card-icon card-icon-green"><i class="far fa-check-circle"></i></div>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-clients" class="main-view hidden">
+            <header class="header">
+                <h1 class="page-title">Historial de Clientes</h1>
+            </header>
+            <section class="settings-card">
+                <input type="text" placeholder="Buscar por email..." class="form-input">
+            </section>
+        </div>
+
+        <div id="view-settings" class="main-view hidden">
+            <header class="header">
+                <h1 class="page-title">Configuración de la Cuenta</h1>
+            </header>
+            <section class="settings-card">
+                <p class="placeholder-text">Opciones de cuenta no funcionales en la plantilla.</p>
+            </section>
+        </div>
+    </main>
+    <script src="../js/script.js"></script>
+</body>
+</html>
