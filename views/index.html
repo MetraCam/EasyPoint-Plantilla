@@ -5,14 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyPoint - Inicio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+    <div class="sticky-header" id="stickyHeader" style="display: none;">
+        <div class="sticky-container">
+            <div class="sticky-logo"><a href="index.html">EasyPoint</a></div>
+            <form action="search.html" method="GET" class="sticky-search-bar">
+                <input type="hidden" name="action" value="search">
+                <div class="search-field">
+                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" name="q" placeholder="Search services">
+                </div>
+                <div class="search-field border-left">
+                    <span class="search-icon"><i class="fa-solid fa-location-dot"></i></span>
+                    <input type="text" name="loc" placeholder="Where?">
+                </div>
+                <button type="submit" class="sticky-search-btn">Search</button>
+            </form>
+            <div class="sticky-menu">
+                <a href="#" class="login-link" onclick="openAuthModal(event)">Log In/Sign Up</a>
+                <a href="#" class="business-button" onclick="openStoreModal(event)">List your business</a>
+            </div>
+        </div>
+    </div>
+
     <header class="main-header">
         <nav class="navigation-bar">
             <div class="logo"><a href="index.html">EasyPoint</a></div>
             <div class="user-menu">
-                <a href="dashboard.html" class="business-button">Ir al Dashboard</a>
+                <a href="#" class="login-link" onclick="openAuthModal(event)">Log In/Sign Up</a>
+                <a href="#" class="business-button" onclick="openStoreModal(event)">List your business</a>
             </div>
         </nav>
         
@@ -20,17 +44,24 @@
             <h1 class="main-title">Believe in yourself</h1>
             <p class="subtitle">Discover and book an appointment with beauty and wellness professionals near you</p>
             
-            <form class="hero-search-bar">
-                <div class="search-field">
-                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
-                    <input type="text" placeholder="Search services" class="search-input">
+            <form action="search.html" method="GET" class="hero-search-bar" style="background-color: rgba(235, 230, 210, 0.1); border: 1px solid rgba(165, 134, 104, 0.3); border-radius: 50px; padding: 5px; display: flex; align-items: center; box-shadow: 0 4px 20px rgba(0,0,0,0.2); max-width: 750px; margin: 30px auto; backdrop-filter: blur(5px);">
+                <input type="hidden" name="action" value="search">
+                <div class="search-field" style="flex: 1; display: flex; align-items: center; padding: 10px 20px;">
+                    <span class="search-icon" style="color: #a58668; margin-right: 15px; font-size: 18px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" name="q" placeholder="Search services" style="border: none; outline: none; width: 100%; font-size: 16px; background: transparent; color: #ebe6d2;">
                 </div>
-                <div class="search-divider"></div>
-                <div class="search-field">
-                    <span class="search-icon"><i class="fa-solid fa-location-dot"></i></span>
-                    <input type="text" placeholder="Where?" class="search-input">
+                <div style="width: 1px; height: 30px; background-color: rgba(165, 134, 104, 0.3);"></div>
+                <div class="search-field" style="flex: 1; display: flex; align-items: center; padding: 10px 20px;">
+                    <span class="search-icon" style="color: #a58668; margin-right: 15px; font-size: 18px;">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </span>
+                    <input type="text" name="loc" placeholder="Where?" style="border: none; outline: none; width: 100%; font-size: 16px; background: transparent; color: #ebe6d2;">
                 </div>
-                <button type="button" class="sticky-search-btn">Search</button>
+                <button type="submit" class="sticky-search-btn" style="background-color: #a58668; color: #2b201e; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; margin-left: 5px; font-size: 16px;">
+                    Search
+                </button>
             </form>
 
             <ul class="category-list">
@@ -51,23 +82,6 @@
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <div class="shops-grid" id="carouselTrack">
-                <a href="store.html" class="shop-card-link">
-                    <article class="shop-card">
-                        <div class="image-container">
-                            <img src="../assets/images/tienda-1.png" alt="Salón Elegance" class="shop-image">
-                            <div class="rating-label">
-                                <i class="fas fa-star"></i> 5.0
-                                <span class="reviews-text">(124)</span>
-                            </div>
-                        </div>
-                        <div class="shop-info">
-                            <h3 class="shop-name">Salón de Belleza Elegance</h3>
-                            <p class="shop-address">Calle Falsa 123, Valencia</p>
-                            <span class="sponsored-text">Recommended</span>
-                        </div>
-                    </article>
-                </a>
-
                 <a href="store.html" class="shop-card-link">
                     <article class="shop-card">
                         <div class="image-container">
@@ -187,6 +201,88 @@
         </div>
     </section>
 
+    <div id="auth-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeAuthModal()" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;">&times;</span>
+            <div id="login-view">
+                <h2 class="modal-title">Welcome Back</h2>
+                <p class="modal-subtitle">Log in to book your next appointment</p>
+                <form id="login-form" onsubmit="simulateLogin(event, 'user')">
+                    <div class="form-group">
+                        <label>Email or Username</label>
+                        <input type="text" name="identifier" required class="modal-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required class="modal-input">
+                    </div>
+                    <button type="submit" class="modal-btn">Log In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="store-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <span class="close-store-modal" onclick="closeStoreModal()" style="position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer;">&times;</span>
+            <h2 class="modal-title">Register your Business</h2>
+            <p class="modal-subtitle">List your store on EasyPoint</p>
+            <form id="store-register-form" onsubmit="simulateLogin(event, 'store')">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Business Name</label>
+                    <input type="text" name="business_name" required class="modal-input">
+                </div>
+                <button type="submit" class="modal-btn">Create Business Account</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            const stickyHeader = document.getElementById('stickyHeader');
+            if (window.scrollY > 100) {
+                stickyHeader.style.display = 'block';
+            } else {
+                stickyHeader.style.display = 'none';
+            }
+        });
+
+        function openAuthModal(e) {
+            e.preventDefault();
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function openStoreModal(e) {
+            e.preventDefault();
+            document.getElementById('store-modal').style.display = 'flex';
+        }
+
+        function closeStoreModal() {
+            document.getElementById('store-modal').style.display = 'none';
+        }
+
+        function simulateLogin(e, role) {
+            e.preventDefault();
+            localStorage.setItem('userRole', role);
+            window.location.href = 'dashboard.html';
+        }
+    </script>
     <script src="../js/script.js"></script>
 </body>
 </html>
