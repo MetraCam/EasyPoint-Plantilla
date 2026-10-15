@@ -1,72 +1,155 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EasyPoint - Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/styles-dashboard.css">
 </head>
 <body class="dashboard-body">
-    <aside class="sidebar">
+
+    <div class="sticky-header" id="stickyHeader" style="display: none;">
+        <div class="sticky-container">
+            <div class="sticky-logo"><a href="index.html">EasyPoint</a></div>
+            <form action="search.html" method="GET" class="sticky-search-bar">
+                <input type="hidden" name="action" value="search">
+                <div class="search-field">
+                    <span class="search-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" name="q" placeholder="Search services">
+                </div>
+                <div class="search-field border-left">
+                    <span class="search-icon"><i class="fa-solid fa-location-dot"></i></span>
+                    <input type="text" name="loc" placeholder="Where?">
+                </div>
+                <button type="submit" class="sticky-search-btn">Search</button>
+            </form>
+            <div class="sticky-menu">
+                <a href="#" class="login-link" onclick="openAuthModal(event)">Log In/Sign Up</a>
+                <a href="#" class="business-button" onclick="openStoreModal(event)">List your business</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <span class="close-modal" onclick="closeAuthModal()" style="position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer;">&times;</span>
+            <div id="login-view">
+                <h2 class="modal-title">Welcome Back</h2>
+                <p class="modal-subtitle">Log in to book your next appointment</p>
+                <form id="login-form" onsubmit="simulateLogin(event, 'user')">
+                    <div class="form-group">
+                        <label>Email or Username</label>
+                        <input type="text" name="identifier" required class="modal-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password" required class="modal-input">
+                    </div>
+                    <button type="submit" class="modal-btn">Log In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="store-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <span class="close-store-modal" onclick="closeStoreModal()" style="position: absolute; top: 15px; right: 20px; font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer;">&times;</span>
+            <h2 class="modal-title">Register your Business</h2>
+            <p class="modal-subtitle">List your store on EasyPoint</p>
+            <form id="store-register-form" onsubmit="simulateLogin(event, 'store')">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" name="email" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" required class="modal-input">
+                </div>
+                <div class="form-group">
+                    <label>Business Name</label>
+                    <input type="text" name="business_name" required class="modal-input">
+                </div>
+                <button type="submit" class="modal-btn">Create Business Account</button>
+            </form>
+        </div>
+    </div>
+
+    <aside class="sidebar" id="sidebar">
         <div class="logo">
             <i class="fas fa-calendar-check"></i>
             <span class="logo-text">EasyPoint</span>
         </div>
         <div class="backhome">
             <a href="index.html" class="menu-item-link">
-                <i class="fas fa-arrow-left"></i> <span class="menu-text">Volver al Inicio</span>
+                <i class="fas fa-arrow-left"></i> <span class="menu-text">Back to Home</span>
             </a>
         </div>
         <nav class="sidebar-nav">
-            <a href="#" class="menu-item active" data-target="view-dashboard">
-                <i class="fas fa-tachometer-alt"></i><span class="menu-text">Gestión</span>
+            <a href="#" class="menu-item" data-target="view-dashboard" onclick="switchMainView(event, 'view-dashboard')">
+                <i class="fas fa-tachometer-alt"></i><span class="menu-text">Management</span>
             </a>
-            <a href="#" class="menu-item" data-target="view-calendar">
-                <i class="far fa-calendar-alt"></i><span class="menu-text">Calendario</span>
+            <a href="#" class="menu-item active" data-target="view-calendar" onclick="switchMainView(event, 'view-calendar')">
+                <i class="far fa-calendar-alt"></i><span class="menu-text">Calendar</span>
             </a>
-            <a href="#" class="menu-item" data-target="view-clients">
-                <i class="far fa-user"></i><span class="menu-text">Clientes</span>
+            <a href="#" class="menu-item" data-target="view-clients" onclick="switchMainView(event, 'view-clients')">
+                <i class="far fa-user"></i><span class="menu-text">Clients</span>
             </a>
-            <a href="#" class="menu-item" data-target="view-settings">
-                <i class="fas fa-cog"></i><span class="menu-text">Configuración</span>
+            <a href="#" class="menu-item" data-target="view-settings" onclick="switchMainView(event, 'view-settings')">
+                <i class="fas fa-cog"></i><span class="menu-text">Settings</span>
             </a>
         </nav>
     </aside>
 
     <main class="content">
-        <div id="view-dashboard" class="main-view active-view">
+        <div id="view-dashboard" class="main-view hidden">
             <header class="header">
                 <div class="header-text">
-                    <h1 class="page-title">Gestión</h1>
-                    <p class="page-subtitle">Configura los detalles de tu negocio y servicios</p>
+                    <h1 class="page-title">Management</h1>
+                    <p class="page-subtitle">Configure your business details and services</p>
                 </div>
             </header>
             <div class="settings-tabs">
-                <button class="tab-btn active" data-tab="business"><i class="fas fa-store"></i> Negocio</button>
-                <button class="tab-btn" data-tab="schedule"><i class="far fa-clock"></i> Horario</button>
-                <button class="tab-btn" data-tab="services"><i class="fas fa-cut"></i> Servicios</button>
+                <button class="tab-btn active" data-tab="business" onclick="openTab(event, 'business')"><i class="fas fa-store"></i> Business</button>
+                <button class="tab-btn" data-tab="schedule" onclick="openTab(event, 'schedule')"><i class="far fa-clock"></i> Schedule</button>
+                <button class="tab-btn" data-tab="services" onclick="openTab(event, 'services')"><i class="fas fa-cut"></i> Services</button>
             </div>
             
             <div id="business" class="tab-content active-content">
                 <section class="settings-card">
                     <div class="card-header">
-                        <h3>Información del Negocio</h3>
+                        <h3>Business Information</h3>
+                        <p>Public information visible to clients</p>
                     </div>
-                    <form class="settings-form">
-                        <div class="form-group">
-                            <label>Nombre del Negocio</label>
-                            <input type="text" class="form-input" value="Salón de Belleza Elegance">
+                    <form class="settings-form" onsubmit="event.preventDefault(); alert('Saved!');">
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label>Business Name</label>
+                                <input type="text" class="form-input" value="Elegance Beauty Salon">
+                            </div>
+                            <div class="form-group half">
+                                <label>Category</label>
+                                <select class="form-input">
+                                    <option>Hair Salon</option>
+                                    <option>Barbershop</option>
+                                    <option selected>Beauty Salon</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <label>Dirección</label>
-                            <input type="text" class="form-input" value="Calle Falsa 123">
+                            <label>Address</label>
+                            <input type="text" class="form-input" value="123 Main Street, Valencia">
                         </div>
                         <div class="form-group">
-                            <label>Descripción</label>
-                            <textarea rows="4" class="form-input">Expertos en cuidado personal.</textarea>
+                            <label>Description</label>
+                            <textarea rows="4" class="form-input">Experts in personal care and beauty treatments.</textarea>
                         </div>
-                        <button type="button" class="btn-save-1">Guardar Cambios</button>
+                        <button type="submit" class="btn-save-1"><i class="fas fa-save"></i> Save Changes</button>
                     </form>
                 </section>
             </div>
@@ -74,62 +157,350 @@
             <div id="schedule" class="tab-content hidden">
                 <section class="settings-card">
                     <div class="card-header">
-                        <h3>Horarios de Apertura</h3>
+                        <h3>Opening Hours</h3>
                     </div>
-                    <p class="placeholder-text">Configuración de horario no funcional en la plantilla.</p>
+                    <div class="schedule-container">
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="monday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Monday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="monday-open" value="09:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="monday-close" value="20:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="tuesday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Tuesday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="tuesday-open" value="09:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="tuesday-close" value="20:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="wednesday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Wednesday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="wednesday-open" value="09:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="wednesday-close" value="20:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="thursday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Thursday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="thursday-open" value="09:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="thursday-close" value="20:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="friday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Friday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="friday-open" value="09:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="friday-close" value="20:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="saturday-active" onchange="toggleDay(this)" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Saturday</span>
+                            </div>
+                            <div class="time-inputs" style="display: flex;">
+                                <input type="time" id="saturday-open" value="10:00" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="saturday-close" value="14:00" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: none;">Closed</div>
+                        </div>
+
+                        <div class="schedule-row">
+                            <div class="day-toggle">
+                                <label class="switch">
+                                    <input type="checkbox" id="sunday-active" onchange="toggleDay(this)">
+                                    <span class="slider round"></span>
+                                </label>
+                                <span class="day-name">Sunday</span>
+                            </div>
+                            <div class="time-inputs" style="display: none;">
+                                <input type="time" id="sunday-open" value="" class="form-input time-input">
+                                <span style="margin: 0 10px;">to</span>
+                                <input type="time" id="sunday-close" value="" class="form-input time-input">
+                            </div>
+                            <div class="closed-label" style="display: block;">Closed</div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="save-schedule-btn" class="btn-save-2" onclick="event.preventDefault(); alert('Schedule saved!');"><i class="fas fa-save"></i> Save Schedule</button>
+                    </div>
                 </section>
             </div>
 
             <div id="services" class="tab-content hidden">
-                <section class="settings-card">
-                    <div class="card-header">
-                        <h3>Gestión de Servicios</h3>
+                <h2 style="margin-bottom: 20px;">Manage Services</h2>
+
+                <div class="service-container">
+                    <h3 style="margin-top: 0; margin-bottom: 20px; color: #333;">Add New Service</h3>
+                    <form id="add-service-form" onsubmit="event.preventDefault(); alert('Service Added!');">
+                        <div class="add-service-grid">
+                            <div class="form-field">
+                                <label>Name</label>
+                                <input type="text" name="service_name" placeholder="e.g. Haircut" required class="service-input">
+                            </div>
+                            <div class="form-field">
+                                <label>Price (€)</label>
+                                <input type="number" step="0.01" name="service_price" placeholder="0.00" required class="service-input">
+                            </div>
+                            <div class="form-field">
+                                <label>Duration (min)</label>
+                                <input type="number" name="service_duration" placeholder="30" required class="service-input">
+                            </div>
+                            <div class="form-field">
+                                <button type="submit" class="btn-add">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <h3 class="service-list">Your Services List</h3>
+                <div id="services-list" style="display: grid; gap: 15px;">
+                    <div class="service-item">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div>
+                                <i class="fas fa-cut" style="color: #555;"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 16px; color: #333;">Men's Haircut</h4>
+                                <span style="font-size: 13px; color: #333;"><i class="far fa-clock"></i> 30 min</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <span style="font-weight: bold; font-size: 18px; color: #000;">15.00 €</span>
+                            <a href="#" onclick="event.preventDefault(); this.closest('.service-item').remove();" style="color: #ff4d4d; background: #fff0f0; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 6px;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
                     </div>
-                    <p class="placeholder-text">Panel de servicios no funcional en la plantilla.</p>
-                </section>
+
+                    <div class="service-item">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div>
+                                <i class="fas fa-cut" style="color: #555;"></i>
+                            </div>
+                            <div>
+                                <h4 style="margin: 0; font-size: 16px; color: #333;">Beard Trim</h4>
+                                <span style="font-size: 13px; color: #333;"><i class="far fa-clock"></i> 20 min</span>
+                            </div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <span style="font-weight: bold; font-size: 18px; color: #000;">10.00 €</span>
+                            <a href="#" onclick="event.preventDefault(); this.closest('.service-item').remove();" style="color: #ff4d4d; background: #fff0f0; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 6px;"><i class="fas fa-trash-alt"></i></a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="view-calendar" class="main-view hidden">
+        <div id="view-calendar" class="main-view active-view">
             <header class="header">
-                <div class="header-text">
-                    <h1 class="page-title">Resumen de Citas</h1>
-                </div>
+                <div class="welcome">Welcome back. Here is a summary of your schedule.</div>
             </header>
             <section class="summary-cards">
                 <div class="card">
-                    <div class="card-content"><h3>5</h3><p>Hoy</p></div>
+                    <div class="card-content"><h3>5</h3><p>Today</p></div>
                     <div class="card-icon card-icon-blue"><i class="far fa-calendar"></i></div>
                 </div>
                 <div class="card">
-                    <div class="card-content"><h3>2</h3><p>Pendientes</p></div>
+                    <div class="card-content"><h3>2</h3><p>Pending</p></div>
                     <div class="card-icon card-icon-yellow"><i class="far fa-clock"></i></div>
                 </div>
                 <div class="card">
-                    <div class="card-content"><h3>18</h3><p>Confirmados</p></div>
+                    <div class="card-content"><h3>18</h3><p>Confirmed</p></div>
                     <div class="card-icon card-icon-green"><i class="far fa-check-circle"></i></div>
                 </div>
+                <div class="card">
+                    <div class="card-content"><h3>25</h3><p>Total</p></div>
+                    <div class="card-icon card-icon-teal"><i class="fas fa-chart-line"></i></div>
+                </div>
             </section>
+
+            <div class="main-section">
+                <section class="appointments-list">
+                    <h2 class="section-title" id="appointments-title">Upcoming Appointments</h2>
+                    <div id="appointments-container">
+                    </div>
+                </section>
+
+                <aside class="right-sidebar">
+                    <div class="calendar-widget">
+                        <div class="calendar-header">
+                            <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                            <h3 id="monthYear">October 2026</h3>
+                            <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid" id="calendar">
+                        </div>
+                    </div>
+                </aside>
+            </div>
         </div>
 
         <div id="view-clients" class="main-view hidden">
             <header class="header">
-                <h1 class="page-title">Historial de Clientes</h1>
+                <div class="header-text">
+                    <h1 class="page-title">Client History</h1>
+                    <p class="page-subtitle">Search appointments by client email</p>
+                </div>
             </header>
             <section class="settings-card">
-                <input type="text" placeholder="Buscar por email..." class="form-input">
+                <div class="search-container" style="display: flex; gap: 10px; margin-bottom: 20px;">
+                    <input type="text" id="client-search-email" placeholder="Search by email (e.g. 'alex', 'maria@')..." class="form-input" style="flex-grow: 1;">
+                    <button class="btn-save-1" onclick="event.preventDefault(); alert('Searching...');">Search</button>
+                </div>
+                <div id="client-history-results">
+                    <p style="font-style: italic; text-align: center; padding: 20px;">
+                        Enter a client's email to see their appointment history in your business.
+                    </p>
+                </div>
             </section>
         </div>
 
         <div id="view-settings" class="main-view hidden">
             <header class="header">
-                <h1 class="page-title">Configuración de la Cuenta</h1>
+                <div class="header-text">
+                    <h1 class="page-title">Account Settings</h1>
+                    <p class="page-subtitle">Manage your security preferences</p>
+                </div>
             </header>
-            <section class="settings-card">
-                <p class="placeholder-text">Opciones de cuenta no funcionales en la plantilla.</p>
+            <section class="settings-card" style="max-width: 600px;">
+                <div class="card-header">
+                    <h3>Change Password</h3>
+                    <p>Ensure your account is using a long, random password to stay secure.</p>
+                </div>
+                <form class="settings-form" id="change-password-form" onsubmit="event.preventDefault(); alert('Password updated!');">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <div class="password-group">
+                            <input type="password" name="current_password" required class="form-input" placeholder="Enter current password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <div class="password-group">
+                            <input type="password" name="new_password" required class="form-input" placeholder="Enter new password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <div class="password-group">
+                            <input type="password" name="confirm_password" required class="form-input" placeholder="Confirm new password">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-save-1">Update Password</button>
+                    </div>
+                </form>
             </section>
         </div>
     </main>
+
+    <script>
+        const allAppointments = [
+            { id: 1, appointment_date: "2026-10-18", appointment_time: "10:00", service_name: "Men's Haircut", status: "confirmed", client_name: "John Doe" },
+            { id: 2, appointment_date: "2026-10-22", appointment_time: "11:30", service_name: "Beard Trim", status: "pending", client_name: "Mike Smith" },
+            { id: 3, appointment_date: "2026-10-27", appointment_time: "14:00", service_name: "Hair Coloring", status: "confirmed", client_name: "Sarah Connor" }
+        ];
+
+        const appointmentDates = allAppointments.map(a => a.appointment_date);
+
+        window.addEventListener('scroll', function() {
+            const stickyHeader = document.getElementById('stickyHeader');
+            if (window.scrollY > 100) {
+                stickyHeader.style.display = 'block';
+            } else {
+                stickyHeader.style.display = 'none';
+            }
+        });
+
+        function openAuthModal(e) {
+            if (e) e.preventDefault();
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = 'none';
+        }
+
+        function openStoreModal(e) {
+            if (e) e.preventDefault();
+            document.getElementById('store-modal').style.display = 'flex';
+        }
+
+        function closeStoreModal() {
+            document.getElementById('store-modal').style.display = 'none';
+        }
+
+        function simulateLogin(e, role) {
+            if (e) e.preventDefault();
+            localStorage.setItem('userRole', role);
+            window.location.href = 'dashboard.html';
+        }
+
+        function toggleDay(checkbox) {
+            const row = checkbox.closest('.schedule-row');
+            const inputs = row.querySelector('.time-inputs');
+            const label = row.querySelector('.closed-label');
+
+            if (checkbox.checked) {
+                inputs.style.display = 'flex';
+                label.style.display = 'none';
+            } else {
+                inputs.style.display = 'none';
+                label.style.display = 'block';
+            }
+        }
+    </script>
     <script src="../js/script.js"></script>
+    <script src="../js/script-dashboard.js"></script>
 </body>
 </html>
