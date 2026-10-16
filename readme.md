@@ -12,14 +12,3 @@ npm init -y
 npm install electron --save-dev
 npm start
 
-
-package.json:
-{
-  "name": "easypoint-desktop",
-  "version": "1.0.0",
-  "main": "main.js",
-  "scripts": {
-    "start": "electron ."
-  },
-  "devDependencies": {}
-}
